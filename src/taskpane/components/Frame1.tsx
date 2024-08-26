@@ -8,7 +8,11 @@ import {
 } from "@fluentui/react-components";
 import { Text } from "@fluentui/react";
 
-const Frame1: React.FC = () => {
+interface Frame1Props {
+  switchToFrame2: () => void;
+}
+
+const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
   // State to hold dynamic values
   const [location, setLocation] = useState("xxx");
   const [requests, setRequests] = useState("XXX");
@@ -59,7 +63,7 @@ const Frame1: React.FC = () => {
         <Button
           appearance="primary"
           style={{ width: "100%" }}
-          onClick={() => console.log("Analyse durchführen clicked")}
+          onClick={switchToFrame2}
         >
           Analyse durchführen
         </Button>

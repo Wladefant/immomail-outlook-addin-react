@@ -8,7 +8,11 @@ import {
   Text,
 } from "@fluentui/react-components";
 
-const Frame2: React.FC = () => {
+interface Frame2Props {
+  switchToFrame3: () => void;
+}
+
+const Frame2: React.FC<Frame2Props> = ({ switchToFrame3 }) => {
   // State for the dynamic values
   const [propertyName, setPropertyName] = useState("Immobilie XXX");
   const [requestsInfo, setRequestsInfo] = useState("XXX der XXX Anfragen treffen auf die Profilbeschreibung zu");
@@ -80,7 +84,7 @@ const Frame2: React.FC = () => {
         <Button
           appearance="primary"
           style={{ width: "100%" }}
-          onClick={() => console.log("Drafts erstellen clicked")}
+          onClick={switchToFrame3}
         >
           Drafts erstellen
         </Button>
