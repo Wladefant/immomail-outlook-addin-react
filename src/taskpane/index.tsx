@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./components/App";
+import Frame1 from "./components/Frame1";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 
 /* global document, Office, module, require, HTMLElement */
@@ -14,14 +14,14 @@ const root = rootElement ? createRoot(rootElement) : undefined;
 Office.onReady(() => {
   root?.render(
     <FluentProvider theme={webLightTheme}>
-      <App title={title} />
+      <Frame1 />
     </FluentProvider>
   );
 });
 
 if ((module as any).hot) {
-  (module as any).hot.accept("./components/App", () => {
-    const NextApp = require("./components/App").default;
-    root?.render(NextApp);
+  (module as any).hot.accept("./components/Frame1", () => {
+    const NextFrame1 = require("./components/Frame1").default;
+    root?.render(NextFrame1);
   });
 }

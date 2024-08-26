@@ -1,55 +1,71 @@
-<html>
-<head>
-    <title>ImmoMail</title>
-    <script src="https://unpkg.com/react/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div id="app"></div>
-    <script type="text/babel">
-        const App = () => {
-            return (
-                <div className="bg-white w-full max-w-md mx-auto p-6 rounded-lg shadow-md">
-                    <div className="flex items-center mb-6">
-                        <div className="bg-gray-300 rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                            <span className="text-sm">Logo</span>
-                        </div>
-                        <h1 className="text-xl font-semibold">ImmoMail</h1>
-                    </div>
-                    <div className="bg-gray-300 p-4 mb-6 text-center">
-                        <p>Zu der folgenden Immobilie</p>
-                        <p>Ort: xxx</p>
-                        <p className="mt-4">wurden</p>
-                        <p>XXX</p>
-                        <p>Anfragen gefunden.</p>
-                    </div>
-                    <div className="bg-gray-300 p-4 mb-6 text-center">
-                        <p>Beschreibung vom Kundenprofil</p>
-                    </div>
-                    <p className="text-center mb-6">Suche die besten <span className="bg-gray-300 px-2">XXX</span> Anfragen raus</p>
-                    <div className="flex justify-center mb-6">
-                        <button className="bg-gray-300 px-4 py-2 rounded">Analyse durchführen</button>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center">
-                            <div className="bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center mr-2">
-                                <span className="text-sm">?!</span>
-                            </div>
-                            <span className="text-sm">Feedback & Fragen</span>
-                        </div>
-                        <div className="flex space-x-2">
-                            <span className="w-3 h-3 bg-black rounded-full inline-block"></span>
-                            <span className="w-3 h-3 bg-gray-300 rounded-full inline-block"></span>
-                            <span className="w-3 h-3 bg-gray-300 rounded-full inline-block"></span>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
+import React, { useState } from "react";
+import {
+  FluentProvider,
+  webLightTheme,
+  Button,
+  Input,
+  Card,
+} from "@fluentui/react-components";
+import { Text } from "@fluentui/react";
 
-        ReactDOM.render(<App />, document.getElementById('app'));
-    </script>
-</body>
-</html>
+const Frame1: React.FC = () => {
+  // State to hold dynamic values
+  const [location, setLocation] = useState("xxx");
+  const [requests, setRequests] = useState("XXX");
+  const [customerProfile, setCustomerProfile] = useState("Beschreibung vom Kundenprofil");
+  const [requestInput, setRequestInput] = useState("");
+
+  return (  
+    <FluentProvider theme={webLightTheme}>
+      <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
+        {/* Logo and Title */}
+        <Text style={{ fontSize: "24px", fontWeight: "bold", textAlign: "center", marginBottom: "20px" }}>
+          ImmoMail
+        </Text>
+
+        {/* Property Information */}
+        <Card style={{ marginBottom: "20px", padding: "20px" }}>
+          <Text style={{ fontSize: "16px" }}>
+            Zu der folgenden Immobilie
+          </Text>
+          <Text style={{ fontSize: "18px", fontWeight: "bold" }}>
+            Ort: {location}
+          </Text>
+          <Text style={{ fontSize: "16px", marginTop: "10px" }}>
+            wurden {requests} Anfragen gefunden.
+          </Text>
+        </Card>
+
+        {/* Customer Profile Description */}
+        <Card style={{ marginBottom: "20px", padding: "20px" }}>
+          <Text style={{ fontSize: "16px" }}>{customerProfile}</Text>
+        </Card>
+
+        {/* Input for the number of requests to analyze */}
+        <Text style={{ fontSize: "16px", marginBottom: "10px" }}>
+          Suche die besten
+        </Text>
+        <Input
+          placeholder="XXX"
+          value={requestInput}
+          onChange={(e) => setRequestInput(e.target.value)}
+          style={{ marginBottom: "20px" }}
+        />
+        <Text style={{ fontSize: "16px", marginBottom: "10px" }}>
+          Anfragen raus
+        </Text>
+
+        {/* Analyze Button */}
+        <Button
+          appearance="primary"
+          style={{ width: "100%" }}
+          onClick={() => console.log("Analyse durchführen clicked")}
+        >
+          Analyse durchführen
+        </Button>
+      </div>
+    </FluentProvider>
+  );
+};
+
+export default Frame1;
