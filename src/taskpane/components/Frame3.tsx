@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FluentProvider, webLightTheme, Card, Text } from "@fluentui/react-components";
+import { FluentProvider, webLightTheme, Text } from "@fluentui/react-components";
 
 const Frame3: React.FC = () => {
   const propertyName = "XXX (Immobilienname)"; // Replace with dynamic value
@@ -8,32 +8,35 @@ const Frame3: React.FC = () => {
 
   return (
     <FluentProvider theme={webLightTheme}>
-      <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto", textAlign: "center" }}>
+      <div style={{ padding: "40px 20px", maxWidth: "400px", margin: "0 auto", textAlign: "center" }}>
         {/* Logo and Title */}
-        <Text style={{ fontSize: "24px", fontWeight: "bold", textAlign: "center", marginBottom: "20px" }}>
-          ImmoMail
-        </Text>
+        <div style={{ marginBottom: "40px" }}>
+          <Text style={{ fontSize: "24px", fontWeight: "bold", textAlign: "center" }}>
+            ImmoMail
+          </Text>
+        </div>
 
         {/* Congratulations Message */}
-        <Text style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "20px" }}>
+        <Text style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "30px" }}>
           Glückwunsch!
         </Text>
 
-        <Text style={{ fontSize: "16px", marginBottom: "10px" }}>
+        {/* Paragraphs for Better Spacing */}
+        <p style={{ fontSize: "16px", marginBottom: "20px" }}>
           ImmoMail hat dir die {numberOfEmails} Emails für die {numberOfEmails} besten Bewerber in deinen Drafts unter {propertyName} abgelegt.
-        </Text>
+        </p>
 
-        <Text style={{ fontSize: "16px", marginBottom: "20px" }}>
+        <p style={{ fontSize: "16px", marginBottom: "20px" }}>
           Für alle abgelehnten Bewerber haben wir dir die Drafts in {propertyName} abgelegt.
-        </Text>
+        </p>
 
-        <Text style={{ fontSize: "16px", marginBottom: "20px" }}>
+        <p style={{ fontSize: "16px", marginBottom: "20px" }}>
           Überprüfe sie und schicke sie dann ab!
-        </Text>
+        </p>
 
-        <Text style={{ fontSize: "16px", marginBottom: "20px" }}>
+        <p style={{ fontSize: "16px", marginBottom: "20px" }}>
           Du hast dir ca. {savedTime} Minuten Arbeitszeit gespart!
-        </Text>
+        </p>
       </div>
     </FluentProvider>
   );
