@@ -1,75 +1,92 @@
-<html>
-<head>
-    <title>ImmoMail</title>
-    <script src="https://unpkg.com/react/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex justify-center items-center h-screen">
-    <div id="app"></div>
-    <script type="text/babel">
-        const App = () => {
-            return (
-                <div className="bg-white w-80 p-4 rounded-lg shadow-md">
-                    <div className="flex items-center mb-4">
-                        <div className="bg-gray-300 rounded-full w-12 h-12 flex items-center justify-center">
-                            <span>Logo</span>
-                        </div>
-                        <span className="ml-4 text-xl font-semibold">ImmoMail</span>
-                    </div>
-                    <div className="bg-gray-300 p-2 mb-2">Immobilie XXX</div>
-                    <div className="bg-gray-300 p-2 mb-4">XXX der XXX Anfragen treffen auf die Profilbeschreibung zu</div>
-                    <div className="bg-gray-300 p-2 mb-4">
-                        <span>Top XXX Treffer:</span>
-                        <div className="bg-white p-2 mt-2 flex items-center justify-between border border-gray-300">
-                            <div className="flex items-center">
-                                <div className="bg-gray-300 rounded-full w-12 h-12 flex items-center justify-center mr-2">
-                                    <span>Bild</span>
-                                </div>
-                                <div>
-                                    <div>Name</div>
-                                    <div>Plattform</div>
-                                    <div>Kurze Beschreibung</div>
-                                </div>
-                            </div>
-                            <button className="bg-gray-300 p-1 rounded">Details</button>
-                        </div>
-                        <div className="bg-white p-2 mt-2 flex items-center justify-between border border-gray-300">
-                            <div className="flex items-center">
-                                <div className="bg-gray-300 rounded-full w-12 h-12 flex items-center justify-center mr-2">
-                                    <span>Bild</span>
-                                </div>
-                                <div>
-                                    <div>Name</div>
-                                    <div>Plattform</div>
-                                    <div>Kurze Beschreibung</div>
-                                </div>
-                            </div>
-                            <button className="bg-gray-300 p-1 rounded">Details</button>
-                        </div>
-                        <div className="bg-white p-2 mt-2 flex items-center justify-between border border-gray-300">
-                            <div className="flex items-center">
-                                <div className="bg-gray-300 rounded-full w-12 h-12 flex items-center justify-center mr-2">
-                                    <span>Bild</span>
-                                </div>
-                                <div>
-                                    <div>Name</div>
-                                    <div>Plattform</div>
-                                    <div>Kurze Beschreibung</div>
-                                </div>
-                            </div>
-                            <button className="bg-gray-300 p-1 rounded">Details</button>
-                        </div>
-                    </div>
-                    <button className="bg-gray-300 w-full p-2 mb-2 rounded">Template für Bestätigungsemail</button>
-                    <button className="bg-gray-300 w-full p-2 mb-4 rounded">Template für Absageemails</button>
-                    <button className="bg-gray-300 w-full p-2 rounded">Drafts erstellen</button>
-                </div>
-            );
-        };
+import React, { useState } from "react";
+import {
+  FluentProvider,
+  webLightTheme,
+  Button,
+  Input,
+  Card,
+  Text,
+} from "@fluentui/react-components";
 
-        ReactDOM.render(<App />, document.getElementById('app'));
-    </script>
-</body>
-</html>
+const Frame2: React.FC = () => {
+  // State for the dynamic values
+  const [propertyName, setPropertyName] = useState("Immobilie XXX");
+  const [requestsInfo, setRequestsInfo] = useState("XXX der XXX Anfragen treffen auf die Profilbeschreibung zu");
+  const [confirmationTemplate, setConfirmationTemplate] = useState("");
+  const [rejectionTemplate, setRejectionTemplate] = useState("");
+
+  // Dummy data for the top results
+  const topResults = [
+    { name: "Name", platform: "Plattform", description: "Kurze Beschreibung" },
+    { name: "Name", platform: "Plattform", description: "Kurze Beschreibung" },
+    { name: "Name", platform: "Plattform", description: "Kurze Beschreibung" },
+  ];
+
+  return (
+    <FluentProvider theme={webLightTheme}>
+      <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
+        {/* Logo and Title */}
+        <Text style={{ fontSize: "24px", fontWeight: "bold", textAlign: "center", marginBottom: "20px" }}>
+          ImmoMail
+        </Text>
+
+        {/* Property Information */}
+        <Card style={{ marginBottom: "10px", padding: "10px" }}>
+          <Text style={{ fontSize: "16px", fontWeight: "bold" }}>
+            {propertyName}
+          </Text>
+        </Card>
+
+        <Card style={{ marginBottom: "20px", padding: "10px" }}>
+          <Text style={{ fontSize: "16px" }}>
+            {requestsInfo}
+          </Text>
+        </Card>
+
+        {/* Top Results */}
+        <Text style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}>
+          Top XXX Treffer:
+        </Text>
+        <div style={{ marginBottom: "20px" }}>
+          {topResults.map((result, index) => (
+            <Card key={index} style={{ marginBottom: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div>
+                <Text style={{ fontSize: "16px", fontWeight: "bold" }}>{result.name}</Text>
+                <Text style={{ fontSize: "14px" }}>{result.platform}</Text>
+                <Text style={{ fontSize: "12px" }}>{result.description}</Text>
+              </div>
+              <Button appearance="primary" onClick={() => console.log("Details clicked for", result.name)}>
+                Details
+              </Button>
+            </Card>
+          ))}
+        </div>
+
+        {/* Templates */}
+        <Input
+          placeholder="Template für Bestätigungsemail"
+          value={confirmationTemplate}
+          onChange={(e) => setConfirmationTemplate(e.target.value)}
+          style={{ marginBottom: "10px" }}
+        />
+        <Input
+          placeholder="Template für Absageemails"
+          value={rejectionTemplate}
+          onChange={(e) => setRejectionTemplate(e.target.value)}
+          style={{ marginBottom: "20px" }}
+        />
+
+        {/* Drafts Button */}
+        <Button
+          appearance="primary"
+          style={{ width: "100%" }}
+          onClick={() => console.log("Drafts erstellen clicked")}
+        >
+          Drafts erstellen
+        </Button>
+      </div>
+    </FluentProvider>
+  );
+};
+
+export default Frame2;
