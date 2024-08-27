@@ -7,6 +7,9 @@ import {
   Card,
 } from "@fluentui/react-components";
 import { Text } from "@fluentui/react";
+import { Configuration, OpenAIApi } from "openai";
+import OPENAI_API_KEY from "../../config/openaiKey";
+
 interface Frame1Props {
   switchToFrame2: () => void;
 }
@@ -18,25 +21,66 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
   const [customerProfile, setCustomerProfile] = useState("");
   const [requestInput, setRequestInput] = useState("");
 
-  useEffect(() => {
-    if (Office.context.mailbox.item) {
-      setCustomerProfile(Office.context.mailbox.item.subject);
+  const generateSummary = async (emailContent: string) => {
+    const configuration = new Configuration({
+      apiKey: OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
+
+    try {
+      const response = await openai.createCompletion({
+        model: "gpt-4",
+        prompt: `Summarize the following email content: ${emailContent}`,
+        max_tokens: 150,
+      });
+
+      if (response.data && response.data.choices) {
+        return response.data.choices[0].text.trim();
+      } else {
+        throw new Error("Unexpected API response structure");
+      }
+    } catch (error) {
+      console.error("Error generating summary:", error);
+      return "Error generating summary.";
     }
+  };
+
+  useEffect(() => {
+    const fetchEmailContent = async () => {
+      if (Office.context.mailbox.item) {
+        Office.context.mailbox.item.body.getAsync("text", (result) => {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            generateSummary(result.value).then((summary) => {
+              setCustomerProfile(summary);
+            });
+          } else {
+            console.error("Error fetching email content:", result.error);
+          }
+        });
+      }
+    };
+
+    fetchEmailContent();
   }, []);
 
-  return (  
+  return (
     <FluentProvider theme={webLightTheme}>
       <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
         {/* Logo and Title */}
-        <Text style={{ fontSize: "24px", fontWeight: "bold", textAlign: "center", marginBottom: "20px" }}>
+        <Text
+          style={{
+            fontSize: "24px",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "20px",
+          }}
+        >
           ImmoMail
         </Text>
 
         {/* Property Information */}
         <Card style={{ marginBottom: "20px", padding: "20px" }}>
-          <Text style={{ fontSize: "16px" }}>
-            Zu der folgenden Immobilie
-          </Text>
+          <Text style={{ fontSize: "16px" }}>Zu der folgenden Immobilie</Text>
           <Text style={{ fontSize: "18px", fontWeight: "bold" }}>
             Ort: {location}
           </Text>
