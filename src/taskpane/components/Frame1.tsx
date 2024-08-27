@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FluentProvider,
   webLightTheme,
@@ -7,7 +7,6 @@ import {
   Card,
 } from "@fluentui/react-components";
 import { Text } from "@fluentui/react";
-
 interface Frame1Props {
   switchToFrame2: () => void;
 }
@@ -16,8 +15,14 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
   // State to hold dynamic values
   const [location, setLocation] = useState("xxx");
   const [requests, setRequests] = useState("XXX");
-  const [customerProfile, setCustomerProfile] = useState("Beschreibung vom Kundenprofil");
+  const [customerProfile, setCustomerProfile] = useState("");
   const [requestInput, setRequestInput] = useState("");
+
+  useEffect(() => {
+    if (Office.context.mailbox.item) {
+      setCustomerProfile(Office.context.mailbox.item.subject);
+    }
+  }, []);
 
   return (  
     <FluentProvider theme={webLightTheme}>
