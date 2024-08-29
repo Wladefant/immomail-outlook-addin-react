@@ -7,6 +7,7 @@ import {
   Card,
   Text,
 } from "@fluentui/react-components";
+import { createMailFolder } from "../../../sidebar/utils/graphAPI";
 
 interface Frame2Props {
   switchToFrame3: () => void;
@@ -25,6 +26,15 @@ const Frame2: React.FC<Frame2Props> = ({ switchToFrame3 }) => {
     { name: "Name", platform: "Plattform", description: "Kurze Beschreibung" },
     { name: "Name", platform: "Plattform", description: "Kurze Beschreibung" },
   ];
+
+  const handleCreateFolder = async () => {
+    try {
+      await createMailFolder("test");
+      console.log("Folder 'test' created successfully");
+    } catch (error) {
+      console.error("Error creating folder:", error);
+    }
+  };
 
   return (
     <FluentProvider theme={webLightTheme}>
@@ -84,7 +94,10 @@ const Frame2: React.FC<Frame2Props> = ({ switchToFrame3 }) => {
         <Button
           appearance="primary"
           style={{ width: "100%" }}
-          onClick={switchToFrame3}
+          onClick={async () => {
+            await handleCreateFolder();
+            switchToFrame3();
+          }}
         >
           Drafts erstellen
         </Button>
