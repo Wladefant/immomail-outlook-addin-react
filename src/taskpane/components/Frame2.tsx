@@ -4,9 +4,9 @@ import {
   webLightTheme,
   Button,
   Input,
-  Card,
   Text,
 } from "@fluentui/react-components";
+import MarkdownCard from "./MarkdownCard";
 
 interface Frame2Props {
   switchToFrame3: () => void;
@@ -35,17 +35,9 @@ const Frame2: React.FC<Frame2Props> = ({ switchToFrame3 }) => {
         </Text>
 
         {/* Property Information */}
-        <Card style={{ marginBottom: "10px", padding: "10px" }}>
-          <Text style={{ fontSize: "16px", fontWeight: "bold" }}>
-            {propertyName}
-          </Text>
-        </Card>
+        <MarkdownCard markdown={`**${propertyName}**`} />
 
-        <Card style={{ marginBottom: "20px", padding: "10px" }}>
-          <Text style={{ fontSize: "16px" }}>
-            {requestsInfo}
-          </Text>
-        </Card>
+        <MarkdownCard markdown={requestsInfo} />
 
         {/* Top Results */}
         <Text style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}>
@@ -53,16 +45,7 @@ const Frame2: React.FC<Frame2Props> = ({ switchToFrame3 }) => {
         </Text>
         <div style={{ marginBottom: "20px" }}>
           {topResults.map((result, index) => (
-            <Card key={index} style={{ marginBottom: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div>
-                <Text style={{ fontSize: "16px", fontWeight: "bold" }}>{result.name}</Text>
-                <Text style={{ fontSize: "14px" }}>{result.platform}</Text>
-                <Text style={{ fontSize: "12px" }}>{result.description}</Text>
-              </div>
-              <Button appearance="primary" onClick={() => console.log("Details clicked for", result.name)}>
-                Details
-              </Button>
-            </Card>
+            <MarkdownCard key={index} markdown={`**${result.name}**\n\n${result.platform}\n\n${result.description}`} />
           ))}
         </div>
 

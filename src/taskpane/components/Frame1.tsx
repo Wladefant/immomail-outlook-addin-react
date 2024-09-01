@@ -4,11 +4,11 @@ import {
   webLightTheme,
   Button,
   Input,
-  Card,
 } from "@fluentui/react-components";
 import { Text } from "@fluentui/react";
 import { Configuration, OpenAIApi } from "openai";
 import OPENAI_API_KEY from "../../config/openaiKey";
+import MarkdownCard from "./MarkdownCard";
 
 interface Frame1Props {
   switchToFrame2: () => void;
@@ -88,20 +88,10 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
         </Text>
 
         {/* Property Information */}
-        <Card style={{ marginBottom: "20px", padding: "20px" }}>
-          <Text style={{ fontSize: "16px" }}>Zu der folgenden Immobilie</Text>
-          <Text style={{ fontSize: "18px", fontWeight: "bold" }}>
-            Ort: {location}
-          </Text>
-          <Text style={{ fontSize: "16px", marginTop: "10px" }}>
-            wurden {requests} Anfragen gefunden.
-          </Text>
-        </Card>
+        <MarkdownCard markdown={`Zu der folgenden Immobilie\n\n**Ort:** ${location}\n\nwurden **${requests}** Anfragen gefunden.`} />
 
         {/* Customer Profile Description */}
-        <Card style={{ marginBottom: "20px", padding: "20px" }}>
-          <Text style={{ fontSize: "16px" }}>{customerProfile}</Text>
-        </Card>
+        <MarkdownCard markdown={customerProfile} />
 
         {/* Input for the number of requests to analyze */}
         <Text style={{ fontSize: "16px", marginBottom: "10px" }}>
