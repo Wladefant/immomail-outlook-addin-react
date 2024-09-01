@@ -28,14 +28,23 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
     const openai = new OpenAIApi(configuration);
 
     try {
-      const response = await openai.createCompletion({
-        model: "gpt-4",
-        prompt: `Summarize the following email content: ${emailContent}`,
+      const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo", // or 'gpt-4' if you have access
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful assistant that summarizes emails.",
+          },
+          {
+            role: "user",
+            content: `Summarize the following email content: ${emailContent}`,
+          },
+        ],
         max_tokens: 150,
       });
 
-      if (response.data && response.data.choices) {
-        return response.data.choices[0].text.trim();
+      if (response.data.choices && response.data.choices[0].message) {
+        return response.data.choices[0].message.content.trim();
       } else {
         throw new Error("Unexpected API response structure");
       }
