@@ -54,6 +54,39 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
     }
   };
 
+  const determineLocation = async (emailContent: string) => {
+    const configuration = new Configuration({
+      apiKey: OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
+
+    try {
+      const response = await openai.createChatCompletion({
+        model: "gpt-4",
+        messages: [
+          {
+            role: "system",
+            content: "Du bist ein hilfreicher Assistent, der den Ort aus E-Mail-Inhalten extrahiert.",
+          },
+          {
+            role: "user",
+            content: `Bestimme den Ort aus dem folgenden E-Mail-Inhalt und gib als output nur die adresse wieder, falls nicht gefunden "nicht gefunden": ${emailContent}`,
+          },
+        ],
+        max_tokens: 50,
+      });
+
+      if (response.data.choices && response.data.choices[0].message) {
+        return response.data.choices[0].message.content.trim();
+      } else {
+        throw new Error("Unexpected API response structure");
+      }
+    } catch (error) {
+      console.error("Error determining location:", error);
+      return "Error determining location.";
+    }
+  };
+
   useEffect(() => {
     const fetchEmailContent = async () => {
       if (Office.context.mailbox.item) {
@@ -61,6 +94,9 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
           if (result.status === Office.AsyncResultStatus.Succeeded) {
             generateSummary(result.value).then((summary) => {
               setCustomerProfile(summary);
+            });
+            determineLocation(result.value).then((location) => {
+              setLocation(location);
             });
           } else {
             console.error("Error fetching email content:", result.error);
