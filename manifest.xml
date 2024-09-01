@@ -2,15 +2,15 @@
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="MailApp">
   <Id>646eee46-7338-4002-af65-6a59e7354558</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Contoso</ProviderName>
+  <ProviderName>Realest AI</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="immomail-outlook-addin-react"/>
   <Description DefaultValue="A template to get started."/>
   <IconUrl DefaultValue="https://localhost:3000/assets/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-128.png"/>
-  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+  <SupportUrl DefaultValue="w.kirjanovs@realest-ai.com"/>
   <AppDomains>
-    <AppDomain>https://www.contoso.com</AppDomain>
+    <AppDomain>https://realest-ai.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Mailbox"/>
@@ -79,8 +79,8 @@
           <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
         </bt:Urls>
         <bt:ShortStrings>
-          <bt:String id="GroupLabel" DefaultValue="Contoso Add-in"/>
-          <bt:String id="TaskpaneButton.Label" DefaultValue="Show Taskpane"/>
+          <bt:String id="GroupLabel" DefaultValue="Realest AI Add-in"/>
+          <bt:String id="TaskpaneButton.Label" DefaultValue="Immomail"/>
         </bt:ShortStrings>
         <bt:LongStrings>
           <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Opens a task pane."/>
