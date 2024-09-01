@@ -8,7 +8,7 @@ interface MarkdownCardProps {
 
 const MarkdownCard: React.FC<MarkdownCardProps> = ({ markdown }) => {
   return (
-    <Card style={{ marginBottom: "20px", padding: "20px" }}>
+    <Card style={{ marginBottom: "20px", padding: "20px", overflow: "auto" }}>
       <ReactMarkdown>{markdown}</ReactMarkdown>
     </Card>
   );
