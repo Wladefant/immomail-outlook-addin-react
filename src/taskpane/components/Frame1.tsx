@@ -29,15 +29,15 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
 
     try {
       const response = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo", // or 'gpt-4' if you have access
+        model: "gpt-4o", // or 'gpt-4' if you have access
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant that summarizes emails.",
+            content: "Du bist ein hilfreicher Assistent, der E-Mails zusammenfasst und Mieter anhand ihres Profils bewertet.",
           },
           {
             role: "user",
-            content: `Summarize the following email content: ${emailContent}`,
+            content: `Gib eine kurze Zusammenfassung zu dem Mieter auf Deutsch  und bewerte den Mieter auf einer Skala von 1 bis 10, wobei 10 der wünschenswerteste Mieter ist. Gib die Beschreibung in strukturierter Form an: ${emailContent}`,
           },
         ],
         max_tokens: 150,
