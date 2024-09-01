@@ -36,8 +36,20 @@ const App: React.FC = () => {
   );
 };
 
+function itemChanged() {
+  // Update UI based on the new current item.
+  updateTaskPaneUI(Office.context.mailbox.item);
+}
+
+function updateTaskPaneUI(item) {
+  // Assuming that item is always a read item (instead of a compose item).
+  if (item != null) console.log(item.subject);
+}
+
 /* Render application after Office initializes */
 Office.onReady(() => {
+  Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, itemChanged);
+  updateTaskPaneUI(Office.context.mailbox.item);
   root?.render(<App />);
 });
 

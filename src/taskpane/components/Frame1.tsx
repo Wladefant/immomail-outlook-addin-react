@@ -106,6 +106,16 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
     };
 
     fetchEmailContent();
+
+    const itemChangedHandler = () => {
+      fetchEmailContent();
+    };
+
+    Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, itemChangedHandler);
+
+    return () => {
+      Office.context.mailbox.removeHandlerAsync(Office.EventType.ItemChanged, itemChangedHandler);
+    };
   }, []);
 
   return (
