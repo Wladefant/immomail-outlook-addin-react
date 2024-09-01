@@ -40,7 +40,7 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
             content: `Gib eine kurze Zusammenfassung zu dem Mieter auf Deutsch  und bewerte den Mieter auf einer Skala von 1 bis 10, wobei 10 der wünschenswerteste Mieter ist. Gib die Beschreibung in strukturierter Form an: ${emailContent}`,
           },
         ],
-        max_tokens: 150,
+        max_tokens: 400,
       });
 
       if (response.data.choices && response.data.choices[0].message) {
@@ -62,7 +62,7 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
 
     try {
       const response = await openai.createChatCompletion({
-        model: "gpt-4",
+        model: "gpt-4o",
         messages: [
           {
             role: "system",
