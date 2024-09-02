@@ -9,13 +9,14 @@ import { Text } from "@fluentui/react";
 import { Configuration, OpenAIApi } from "openai";
 import OPENAI_API_KEY from "../../config/openaiKey";
 import MarkdownCard from "./MarkdownCard";
+import { CosmosClient } from "@azure/cosmos"; // Import CosmosClient
+import config from "../../config/cosmosconfig"; // Import CosmosDB configuration
 
 interface Frame1Props {
   switchToFrame2: () => void;
 }
 
 const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
-  // State to hold dynamic values
   const [location, setLocation] = useState("xxx");
   const [requests, setRequests] = useState("XXX");
   const [customerProfile, setCustomerProfile] = useState("");
@@ -37,7 +38,7 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
           },
           {
             role: "user",
-            content: `Gib eine kurze Zusammenfassung zu dem Mieter auf Deutsch  und bewerte den Mieter auf einer Skala von 1 bis 10, wobei 10 der wünschenswerteste Mieter ist. Gib die Beschreibung in strukturierter Form an: ${emailContent}`,
+            content: `Gib eine kurze Zusammenfassung zu dem Mieter auf Deutsch und bewerte den Mieter auf einer Skala von 1 bis 10, wobei 10 der wünschenswerteste Mieter ist. Gib die Beschreibung in strukturierter Form an: ${emailContent}`,
           },
         ],
         max_tokens: 300,
@@ -77,7 +78,10 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
       });
 
       if (response.data.choices && response.data.choices[0].message) {
-        return response.data.choices[0].message.content.trim();
+        const determinedLocation = response.data.choices[0].message.content.trim();
+        setLocation(determinedLocation);
+        await saveLocationToCosmosDB(determinedLocation); // Save location to CosmosDB
+        return determinedLocation;
       } else {
         throw new Error("Unexpected API response structure");
       }
@@ -86,6 +90,34 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
       return "Error determining location.";
     }
   };
+
+  // Function to save location to CosmosDB
+  const saveLocationToCosmosDB = async (location: string) => {
+    if (!location || location === "nicht gefunden") return;
+  
+    try {
+      const itemId = Office.context.mailbox.item.itemId; // Get the email ID
+  
+      // Send a POST request to your server
+      const response = await fetch('http://localhost:5000/save-location', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ location, emailId: itemId }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to save location to CosmosDB');
+      }
+  
+      const data = await response.json();
+      console.log('Location saved successfully:', data);
+    } catch (error) {
+      console.error('Error saving location to server:', error);
+    }
+  };
+  
 
   useEffect(() => {
     const fetchEmailContent = async () => {
@@ -121,7 +153,6 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
   return (
     <FluentProvider theme={webLightTheme}>
       <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
-        {/* Logo and Title */}
         <Text
           style={{
             fontSize: "24px",
@@ -133,13 +164,10 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
           ImmoMail
         </Text>
 
-        {/* Property Information */}
         <MarkdownCard markdown={`Zu der folgenden Immobilie\n\n**Ort:** ${location}\n\nwurden **${requests}** Anfragen gefunden.`} />
 
-        {/* Customer Profile Description */}
         <MarkdownCard markdown={customerProfile} />
 
-        {/* Input for the number of requests to analyze */}
         <Text style={{ fontSize: "16px", marginBottom: "10px" }}>
           Suche die besten
         </Text>
@@ -153,7 +181,6 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
           Anfragen raus
         </Text>
 
-        {/* Analyze Button */}
         <Button
           appearance="primary"
           style={{ width: "100%" }}
