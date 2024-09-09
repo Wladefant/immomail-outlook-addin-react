@@ -10,12 +10,7 @@ const Frame3: React.FC = () => {
     <FluentProvider theme={webLightTheme}>
       <div style={{ padding: "40px 20px", maxWidth: "400px", margin: "0 auto", textAlign: "center" }}>
         {/* Logo and Title */}
-        <div style={{ marginBottom: "40px" }}>
-          <Text style={{ fontSize: "24px", fontWeight: "bold", textAlign: "center" }}>
-            ImmoMail
-          </Text>
-        </div>
-
+        
         {/* Congratulations Message */}
         <Text style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "30px" }}>
           Glückwunsch!
@@ -30,9 +25,7 @@ const Frame3: React.FC = () => {
           Für alle abgelehnten Bewerber haben wir dir die Drafts in {propertyName} abgelegt.
         </p>
 
-        <p style={{ fontSize: "16px", marginBottom: "20px" }}>
-          Überprüfe sie und schicke sie dann ab!
-        </p>
+       
 
         <p style={{ fontSize: "16px", marginBottom: "20px" }}>
           Du hast dir ca. {savedTime} Minuten Arbeitszeit gespart!

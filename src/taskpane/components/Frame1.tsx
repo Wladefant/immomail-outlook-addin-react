@@ -4,6 +4,7 @@ import {
   webLightTheme,
   Button,
   Input,
+  Textarea,
 } from "@fluentui/react-components";
 import { Text } from "@fluentui/react";
 import { Configuration, OpenAIApi } from "openai";
@@ -19,41 +20,8 @@ interface Frame1Props {
 const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
   const [location, setLocation] = useState("xxx");
   const [requests, setRequests] = useState("XXX");
-  const [customerProfile, setCustomerProfile] = useState("");
+  const [perfectCustomerProfile, setPerfectCustomerProfile] = useState("");
   const [requestInput, setRequestInput] = useState("");
-
-  const generateSummary = async (emailContent: string) => {
-    const configuration = new Configuration({
-      apiKey: OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
-
-    try {
-      const response = await openai.createChatCompletion({
-        model: "gpt-4o", // or 'gpt-4' if you have access
-        messages: [
-          {
-            role: "system",
-            content: "Du bist ein hilfreicher Assistent, der E-Mails zusammenfasst und Mieter anhand ihres Profils bewertet.",
-          },
-          {
-            role: "user",
-            content: `Gib eine kurze Zusammenfassung zu dem Mieter auf Deutsch und bewerte den Mieter auf einer Skala von 1 bis 10, wobei 10 der wünschenswerteste Mieter ist. Gib die Beschreibung in strukturierter Form an: ${emailContent}`,
-          },
-        ],
-        max_tokens: 300,
-      });
-
-      if (response.data.choices && response.data.choices[0].message) {
-        return response.data.choices[0].message.content.trim();
-      } else {
-        throw new Error("Unexpected API response structure");
-      }
-    } catch (error) {
-      console.error("Error generating summary:", error);
-      return "Error generating summary.";
-    }
-  };
 
   const determineLocation = async (emailContent: string) => {
     const configuration = new Configuration({
@@ -124,9 +92,6 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
       if (Office.context.mailbox.item) {
         Office.context.mailbox.item.body.getAsync("text", (result) => {
           if (result.status === Office.AsyncResultStatus.Succeeded) {
-            generateSummary(result.value).then((summary) => {
-              setCustomerProfile(summary);
-            });
             determineLocation(result.value).then((location) => {
               setLocation(location);
             });
@@ -149,37 +114,36 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
       Office.context.mailbox.removeHandlerAsync(Office.EventType.ItemChanged, itemChangedHandler);
     };
   }, []);
-
   return (
     <FluentProvider theme={webLightTheme}>
-      <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
-        <Text
+      <div style={{ padding: "20px", width: "calc(100% - 40px)", margin: "0 auto" }}>
+        
+        <MarkdownCard markdown={`**Ort:** ${location}\n\n **${requests}** Anfragen gefunden.`} />
+
+        <Textarea
+          placeholder="Beschreiben sie die Voraussetzungen für den perfekten Kunden"
+          value={perfectCustomerProfile}
+          onChange={(e) => setPerfectCustomerProfile(e.target.value)}
           style={{
-            fontSize: "24px",
-            fontWeight: "bold",
-            textAlign: "center",
-            marginBottom: "20px",
+            marginBottom: '20px',
+            width: '100%', // Ensure the input takes the full width of its container
+            height: '100px', // Fixed height to allow for multiple lines
           }}
-        >
-          ImmoMail
-        </Text>
-
-        <MarkdownCard markdown={`Zu der folgenden Immobilie\n\n**Ort:** ${location}\n\nwurden **${requests}** Anfragen gefunden.`} />
-
-        <MarkdownCard markdown={customerProfile} />
+        />
 
         <Text style={{ fontSize: "16px", marginBottom: "10px" }}>
-          Suche die besten
+          Anzahl der akzeptierten Anfragen:
         </Text>
         <Input
-          placeholder="XXX"
+          placeholder="Geben sie ein Zahl ein"
           value={requestInput}
           onChange={(e) => setRequestInput(e.target.value)}
-          style={{ marginBottom: "20px" }}
+          style={{
+            marginBottom: "20px",
+            width: '100%', // Ensure the input takes the full width of its container
+          }}
         />
-        <Text style={{ fontSize: "16px", marginBottom: "10px" }}>
-          Anfragen raus
-        </Text>
+       
 
         <Button
           appearance="primary"
