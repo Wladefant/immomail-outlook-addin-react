@@ -25,14 +25,22 @@
     "start:web": "office-addin-debugging start manifest.xml web",
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "start-server": "node server.js"
   },
   "dependencies": {
+    "@azure/cosmos": "^4.1.1",
+    "@azure/identity": "^4.4.1",
+    "@azure/msal-node": "^2.13.1",
     "@fluentui/react": "^8.120.6",
     "@fluentui/react-components": "^9.46.8",
     "@fluentui/react-icons": "^2.0.232",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
     "core-js": "^3.36.0",
+    "cors": "^2.8.5",
     "es6-promise": "^4.2.8",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "openai": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

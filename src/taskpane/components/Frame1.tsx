@@ -94,30 +94,25 @@ const Frame1: React.FC<Frame1Props> = ({ switchToFrame2 }) => {
   // Function to save location to CosmosDB
   const saveLocationToCosmosDB = async (location: string) => {
     if (!location || location === "nicht gefunden") return;
-  
+
     try {
+      const client = new CosmosClient({ endpoint: config.endpoint, key: config.key });
+      const database = client.database(config.databaseId);
+      const container = database.container(config.containerId);
+
       const itemId = Office.context.mailbox.item.itemId; // Get the email ID
-  
-      // Send a POST request to your server
-      const response = await fetch('http://localhost:5000/save-location', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ location, emailId: itemId }),
+
+      const { resource: createdItem } = await container.items.create({
+        id: itemId,
+        location: location,
+        emailId: itemId,
       });
-  
-      if (!response.ok) {
-        throw new Error('Failed to save location to CosmosDB');
-      }
-  
-      const data = await response.json();
-      console.log('Location saved successfully:', data);
+
+      console.log('Location saved successfully:', createdItem);
     } catch (error) {
-      console.error('Error saving location to server:', error);
+      console.error('Error saving location to CosmosDB:', error);
     }
   };
-  
 
   useEffect(() => {
     const fetchEmailContent = async () => {
